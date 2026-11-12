@@ -95,6 +95,7 @@ streamlit run app/app.py
 
 ```
 ## Estructura del repositorio
+```bash
 data/raw      datos originales sin modificar
 data/clean    datos limpios
 notebooks/    exploración y modelo
