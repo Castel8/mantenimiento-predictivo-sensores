@@ -1,2 +1,2 @@
-# mantenimiento-predictivo-sensore
+# mantenimiento-predictivo-sensores
 Datos de sensores
