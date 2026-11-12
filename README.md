@@ -22,3 +22,4 @@ Predecir si una máquina fallará a partir de lecturas de sensores de proceso (t
 | TWF, HDF, PWF, OSF, RNF | Modos de falla (desgaste, disipación de calor, potencia, sobrecarga, aleatoria) |
 
 Nota: `Machine failure` vale 1 cuando ocurre cualquiera de los cinco modos de falla, así que esas cinco columnas **no se usarán como variables de entrada** del modelo (filtrarían la respuesta).
+Calidad de los datos: 0 nulos y 0 duplicados. Hay 27 filas (0.27 %) con inconsistencias de origen: 9 con falla sin ningún modo activo y 18 con falla aleatoria (RNF) sin falla registrada. Se conservaron y no afectan al modelo porque la etiqueta es `Machine failure`.
