@@ -23,3 +23,4 @@ Predecir si una máquina fallará a partir de lecturas de sensores de proceso (t
 
 Nota: `Machine failure` vale 1 cuando ocurre cualquiera de los cinco modos de falla, así que esas cinco columnas **no se usarán como variables de entrada** del modelo (filtrarían la respuesta).
 Calidad de los datos: 0 nulos y 0 duplicados. Hay 27 filas (0.27 %) con inconsistencias de origen: 9 con falla sin ningún modo activo y 18 con falla aleatoria (RNF) sin falla registrada. Se conservaron y no afectan al modelo porque la etiqueta es `Machine failure`.
+Outliers (regla del IQR): velocidad de rotación 418 (4.18 %) y torque 69 (0.69 %). Se conservaron: las filas con torque atípico fallan el 89.9 % de las veces (contra 2.8 % en las normales) y las de velocidad atípica el 8.4 % (contra 3.2 %).
