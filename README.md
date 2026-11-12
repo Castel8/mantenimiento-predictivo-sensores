@@ -48,16 +48,53 @@ En manufactura, una falla inesperada detiene la producción. El objetivo es pred
 ![Correlaciones](reports/figures/4_correlaciones.png)
 
 ## Modelo y resultados
-*(Pendiente: se completa con el paso 4 y 5.)*
+Separación 80/20 estratificada, `class_weight="balanced"` y variables creadas a partir de las reglas físicas de falla (`power_w` = torque × velocidad angular y `temp_diff_k`). Se excluyeron los 5 modos de falla de las entradas para evitar fuga de datos.
+
+| Modelo | Precision | Recall | F1 (prueba) | F1 (validación cruzada, 5 cortes) |
+|---|---|---|---|---|
+| Regresión logística (línea base) | 0.178 | 0.868 | 0.295 | 0.275 ± 0.018 |
+| Random Forest | 0.917 | 0.809 | 0.859 | 0.806 ± 0.053 |
+| **Gradient Boosting (elegido)** | 0.803 | 0.838 | 0.820 | **0.831 ± 0.025** |
+
+![Matrices de confusión](reports/figures/5_matrices_confusion.png)
+![Importancia de variables](reports/figures/6_importancia_variables.png)
+
+## Conclusiones
+1. Solo el 3.4 % de las lecturas son fallas (339 de 10 000), así que el accuracy engaña: se evaluó con precision, recall y F1 sobre la clase "Falla".
+2. La regresión logística detecta 59 de 68 fallas (recall 0.868) pero genera 273 falsas alarmas (precision 0.178), lo que la hace inviable: una frontera lineal no captura que las fallas ocurren en los extremos de torque y rpm.
+3. Random Forest y Gradient Boosting superan ampliamente la línea base. En validación cruzada, Gradient Boosting obtuvo F1 0.831 ± 0.025 y recall 0.804 contra F1 0.806 ± 0.053 y recall 0.753 de Random Forest, y fue el modelo más estable, por lo que se eligió como modelo final.
+4. Las variables más influyentes son desgaste de herramienta, rpm, torque y potencia (≈83 % de la importancia en Random Forest); la potencia, construida a partir de torque y rpm, resultó clave, mientras que el tipo de producto y las temperaturas por separado aportan poco.
+5. Limitaciones: el dataset es sintético y la prueba tiene solo 68 fallas. El modelo final aún deja pasar 11 de ellas (16 %). Con más tiempo se ajustaría el umbral de decisión para priorizar recall, se afinarían hiperparámetros y se validaría con datos reales.
 
 ## Dashboard
-*(Pendiente: capturas y enlace al paso 6.)*
+Filtros por tipo, rpm y desgaste; indicador de tasa de falla; gráfico de variables por falla; y un simulador con sliders que predice la probabilidad de falla.
+
+![Exploración](reports/figures/dashboard_exploracion.png)
+![Simulador](reports/figures/dashboard_simulador.png)
 
 ## Cómo ejecutarlo
-*(Pendiente: se completa con el paso 7.)*
-
-## Estructura del repositorio
+```bash
+git clone https://github.com/TU_USUARIO/mantenimiento-predictivo-sensores.git
+cd mantenimiento-predictivo-sensores
+conda create -n portafolio-datos python=3.11 -y
+conda activate portafolio-datos
+pip install -r requirements.txt
+streamlit run app/app.py
 ```
+Notebooks: `notebooks/01_limpieza_exploracion.ipynb` y `notebooks/02_modelo.ipynb`.
+
+## Cómo ejecutarlo como un clon
+```bash
+cd %USERPROFILE%\Desktop
+git clone https://github.com/TU_USUARIO/mantenimiento-predictivo-sensores.git
+cd mantenimiento-predictivo-sensores
+conda create -n prueba-clon python=3.11 -y
+conda activate prueba-clon
+pip install -r requirements.txt
+streamlit run app/app.py
+
+```
+## Estructura del repositorio
 data/raw      datos originales sin modificar
 data/clean    datos limpios
 notebooks/    exploración y modelo
